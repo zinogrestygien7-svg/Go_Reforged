@@ -59,5 +59,5 @@ func isContraction(runes []rune, i int) bool {
 }
 
 func isQuote(runes []rune, i int)bool{
-	return runes[i] == '"' || (rune[i]== '\'' && !isContraction(runes, i))
+	return runes[i] == '"' || (runes[i]== '\'' && !isContraction(runes, i))
 }
