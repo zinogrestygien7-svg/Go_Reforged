@@ -114,7 +114,7 @@ func blockTag(runes []rune, i int) (kind Kind, n int) {
 
 func isWordEnd(runes []rune, i int) bool {
 	r := runes[i]
-	if isSpace(r) || isPunct(r) || isQuote(r) || r == '(' || r == ')' {
+	if isSpace(r) || isPunct(r) || isQuote(runes, i) || r == '(' || r == ')' {
 		return true
 	}
 	_, n := blockTag(runes, i)
