@@ -34,7 +34,7 @@ func Lex(line string, lineNo int) []Token {
 			spaceBefore = false
 		default:
 			start := i
-			for i < len(runes) && !isSpace(runes[i]) && !isPunct(runes[i]) && !isQuote(runes[i]) {
+			for i < len(runes) && !isSpace(runes[i]) && !isPunct(runes[i]) && !isQuote(runes, i) {
 				i++
 			}
 			tokens = append(tokens, Token{
