@@ -43,6 +43,40 @@ func TestLex(t *testing.T) {
 			{Kind: Word, Text: "don't", Line: 1, Col: 3, SpaceBefore: true},
 			{Kind: Quote, Text: "'", Line: 1, Col: 9, SpaceBefore: true},
 		}},
+				{"modificateur avec nombre", "so exciting (up, 2)", []Token{
+			{Kind: Word, Text: "so", Line: 1, Col: 1},
+			{Kind: Word, Text: "exciting", Line: 1, Col: 4, SpaceBefore: true},
+			{Kind: Modifier, Text: "(up, 2)", Line: 1, Col: 13, SpaceBefore: true},
+		}},
+		{"nombre invalide reste un modificateur", "go (up, -1)", []Token{
+			{Kind: Word, Text: "go", Line: 1, Col: 1},
+			{Kind: Modifier, Text: "(up, -1)", Line: 1, Col: 4, SpaceBefore: true},
+		}},
+		{"parenthèses ordinaires", "the (hello) word", []Token{
+			{Kind: Word, Text: "the", Line: 1, Col: 1},
+			{Kind: Paren, Text: "(", Line: 1, Col: 5, SpaceBefore: true},
+			{Kind: Word, Text: "hello", Line: 1, Col: 6},
+			{Kind: Paren, Text: ")", Line: 1, Col: 11},
+			{Kind: Word, Text: "word", Line: 1, Col: 13, SpaceBefore: true},
+		}},
+		{"modificateur échappé", `Type \(up) to`, []Token{
+			{Kind: Word, Text: "Type", Line: 1, Col: 1},
+			{Kind: Word, Text: "(up)", Line: 1, Col: 7, SpaceBefore: true},
+			{Kind: Word, Text: "to", Line: 1, Col: 12, SpaceBefore: true},
+		}},
+		{"bloc collé au mot", "[up]hi[/up]", []Token{
+			{Kind: BlockOpen, Text: "[up]", Line: 1, Col: 1},
+			{Kind: Word, Text: "hi", Line: 1, Col: 5},
+			{Kind: BlockClose, Text: "[/up]", Line: 1, Col: 7},
+		}},
+		{"crochets inconnus", "[x] a", []Token{
+			{Kind: Word, Text: "[x]", Line: 1, Col: 1},
+			{Kind: Word, Text: "a", Line: 1, Col: 5, SpaceBefore: true},
+		}},
+		{"parenthèse sans fermeture", "(up", []Token{
+			{Kind: Paren, Text: "(", Line: 1, Col: 1},
+			{Kind: Word, Text: "up", Line: 1, Col: 2},
+		}},
 	}
 
 	for _, tc := range tests {
