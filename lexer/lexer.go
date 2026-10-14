@@ -31,7 +31,7 @@ func Lex(line string, lineNo int) []Token {
 		blockKind, blockN := blockTag(runes, i)
 		escLen := 0
 		if r == '\\' {
-			escLen = modifierLen(runes, i + 1)
+			escLen = modifierLen(runes, i+1)
 		}
 
 		switch {
@@ -80,8 +80,8 @@ func modifierLen(runes []rune, i int) int {
 		case '(':
 			return 0
 		case ')':
-			name, _, _ := string.Cut(string(runes[i+1:j]), ",")
-			if modifierNames[string.TrimSpace(name)] {
+			name, _, _ := strings.Cut(string(runes[i+1:j]), ",")
+			if modifierNames[strings.TrimSpace(name)] {
 				return j - i + 1
 			}
 			return 0
@@ -100,7 +100,7 @@ func blockTag(runes []rune, i int) (kind Kind, n int) {
 			continue
 		}
 		name := string(runes[i+1 : j])
-		closing := string.HasPrefix(name, "/")
+		closing := strings.HasPrefix(name, "/")
 		if !blockNames[strings.TrimPrefix(name, "/")] {
 			return Word, 0
 		}

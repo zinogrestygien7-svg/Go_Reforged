@@ -43,7 +43,7 @@ func TestLex(t *testing.T) {
 			{Kind: Word, Text: "don't", Line: 1, Col: 3, SpaceBefore: true},
 			{Kind: Quote, Text: "'", Line: 1, Col: 9, SpaceBefore: true},
 		}},
-				{"modificateur avec nombre", "so exciting (up, 2)", []Token{
+		{"modificateur avec nombre", "so exciting (up, 2)", []Token{
 			{Kind: Word, Text: "so", Line: 1, Col: 1},
 			{Kind: Word, Text: "exciting", Line: 1, Col: 4, SpaceBefore: true},
 			{Kind: Modifier, Text: "(up, 2)", Line: 1, Col: 13, SpaceBefore: true},
