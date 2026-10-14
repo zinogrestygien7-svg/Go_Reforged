@@ -1,9 +1,9 @@
-package lexer 
+package lexer
 
-type Token0 int 
+type Kind int
 
 const (
-	Mot 		Token0 = iota
+	Mot Kind = iota
 	Punct
 	Quote
 	Modifier
@@ -12,14 +12,14 @@ const (
 )
 
 type Token1 struct {
-	Token0 Token0
-	Text string
-	Ligne int
+	Kind    Kind
+	Text    string
+	Ligne   int
 	Colonne int
 }
- type Diagnostic struct {
-	Ligne int
+type Diagnostic struct {
+	Ligne   int
 	Colonne int
-	Erreur string
+	Erreur  string
 	Message string
- }
+}
