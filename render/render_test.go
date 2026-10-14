@@ -2,8 +2,8 @@ package render
 
 import (
 	"testing"
-	
-	"goreforged/lexer"
+
+	"Go_Reforged/lexer"
 )
 
 func TestRender(t *testing.T) {

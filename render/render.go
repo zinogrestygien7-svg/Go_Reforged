@@ -1,7 +1,7 @@
 package render
 
 import (
-	"goreforged/lexer"
+	"Go_Reforged/lexer"
 	"strings"
 )
 
