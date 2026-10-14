@@ -1,5 +1,7 @@
 package lexer
 
+import "unicode"
+
 func Lex(line string, lineNo int) []Token {
 	runes := []rune(line)
 	var tokens []Token
@@ -11,6 +13,14 @@ func Lex(line string, lineNo int) []Token {
 		switch {
 		case isSpace(r):
 			spaceBefore = true
+			i++
+
+		case isQuote(runes, i):
+			tokens = append(tokens, Token{
+				Kind: Quote, Text: string(r),
+				Line: lineNo, Col: i + 1, SpaceBefore: spaceBefore
+			})
+			spaceBefore = false
 			i++
 		case isPunct(r):
 			start := i
@@ -24,7 +34,7 @@ func Lex(line string, lineNo int) []Token {
 			spaceBefore = false
 		default:
 			start := i
-			for i < len(runes) && !isSpace(runes[i]) && !isPunct(runes[i]) {
+			for i < len(runes) && !isSpace(runes[i]) && !isPunct(runes[i]) && !isQuote(runes[i]) {
 				i++
 			}
 			tokens = append(tokens, Token{
@@ -41,4 +51,13 @@ func isSpace(r rune) bool {
 }
 func isPunct(r rune) bool {
 	return r == '.' || r == ',' || r == '!' || r == '?' || r == ':' || r == ';'
+}
+
+func isContraction(runes []rune, i int) bool {
+	return i > 0 && i+1 < len(runes) &&
+		unicode.IsLetter(runes[i-1]) && unicode.IsLetter(runes[i+1])
+}
+
+func isQuote(runes []rune, i int)bool{
+	return runes[i] == '"' || (rune[i]== '\'' && !isContraction(runes, i))
 }
