@@ -18,7 +18,7 @@ func Lex(line string, lineNo int) []Token {
 		case isQuote(runes, i):
 			tokens = append(tokens, Token{
 				Kind: Quote, Text: string(r),
-				Line: lineNo, Col: i + 1, SpaceBefore: spaceBefore
+				Line: lineNo, Col: i + 1, SpaceBefore: spaceBefore,
 			})
 			spaceBefore = false
 			i++
