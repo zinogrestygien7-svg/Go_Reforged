@@ -58,6 +58,6 @@ func isContraction(runes []rune, i int) bool {
 		unicode.IsLetter(runes[i-1]) && unicode.IsLetter(runes[i+1])
 }
 
-func isQuote(runes []rune, i int)bool{
-	return runes[i] == '"' || (runes[i]== '\'' && !isContraction(runes, i))
+func isQuote(runes []rune, i int) bool {
+	return runes[i] == '"' || (runes[i]== '\'' || !isContraction(runes, i))
 }
