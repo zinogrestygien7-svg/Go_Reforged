@@ -9,7 +9,7 @@ import (
 func TestRender(t *testing.T) {
 	tests := []struct {
 		name string
-		in string
+		in   string
 		want string
 	}{
 		{"texte simple", "hello, world", "hello, world"},
