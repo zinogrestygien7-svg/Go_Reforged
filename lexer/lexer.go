@@ -17,13 +17,13 @@ func Lex(line string, lineNo int) []Token {
 			for i < len(runes) && isPunct(runes[i]) {
 				i++
 			}
-			tokens = append(tokens, Token {
-				Kind : Punct, Text: string(runes[start:i]),
+			tokens = append(tokens, Token{
+				Kind: Punct, Text: string(runes[start:i]),
 				Line: lineNo, Col: start + 1, SpaceBefore: spaceBefore,
 			})
 			spaceBefore = false
 		default:
-			start := i 
+			start := i
 			for i < len(runes) && !isSpace(runes[i]) && !isPunct(runes[i]) {
 				i++
 			}
