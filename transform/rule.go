@@ -1,8 +1,8 @@
 package transform
 
-import lexer "Go_Reforged/lexer"
+import "goreforged/lexer"
 
 type Rule interface {
 	Name() string
-	Apply(tokens []lexer.Token1) ([]lexer.Token1, []lexer.Diagnostic)
+	Apply(tokens []lexer.Token) ([]lexer.Token, []lexer.Diagnostic)
 }
