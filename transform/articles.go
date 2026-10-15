@@ -21,10 +21,14 @@ func (Articles) Apply(tokens []lexer.Token) ([]lexer.Token, []lexer.Diagnostic) 
 			continue
 		}
 		lower := strings.ToLower(tok, Text)
+		if lower != "a" && lower != "an" {
+			continue
+		}
+		next, found := nextWord(out, i)
 		if !found {
 			continue
 		}
-		next, found := startsWithVowelOrh(next)
+		wantsAn, ok := startsWithVowelOrh(next)
 		if !ok {
 			continue
 		}
@@ -39,7 +43,7 @@ func (Articles) Apply(tokens []lexer.Token) ([]lexer.Token, []lexer.Diagnostic) 
 }
 
 func nextWord(tokens []lexer.Token, i int) (string, bool) {
-	for j := i + 1; j < len(tokens); j++{
+	for j := i + 1; j < len(tokens); j++ {
 		switch tokens[j].Kind {
 		case lexer.Word:
 			return tokens[j].Text, true
@@ -55,7 +59,7 @@ func nextWord(tokens []lexer.Token, i int) (string, bool) {
 func startsWithVowelOrh(word string) (wantsAn, ok bool) {
 	r, _ := utf8.DecodeRuneInString(word)
 	if !unicode.IsLetter(r) {
-		return false , false
+		return false, false
 	}
 	return strings.ContainsRune("aeiouhAEIOUH", r), true
 }
