@@ -57,7 +57,7 @@ func startsWithVowelOrh(word string) (wantsAn, ok bool) {
 	if !unicode.IsLetter(r) {
 		return false , false
 	}
-	return strings.ContainsRune('aeiouhAEIOUH', r), true
+	return strings.ContainsRune("aeiouhAEIOUH", r), true
 }
 
 func addN(article string) string {
