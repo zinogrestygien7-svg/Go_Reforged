@@ -1,8 +1,8 @@
 package transform
 
 import (
-	"Go_Reforged/lexer"	
-) 
+	"Go_Reforged/lexer"
+)
 
 type Rule interface {
 	Name() string
