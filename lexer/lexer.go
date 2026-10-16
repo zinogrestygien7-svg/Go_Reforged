@@ -5,15 +5,6 @@ import (
 	"unicode"
 )
 
-type Token struct {
-	Kind        Kind
-	Text        string
-	Line        int
-	Col         int
-	SpaceBefore bool // vrai si un espace précédait ce token dans le texte d'origine
-	Modified    bool // vrai si un modificateur ou un bloc a transformé ce mot
-}
-
 var modifierNames = map[string]bool{
 	"hex": true, "bin": true, "oct": true, "to-hex": true, "to-bin": true,
 	"roman": true, "to-roman": true, "up": true, "low": true, "cap": true,

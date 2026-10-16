@@ -10,26 +10,27 @@ import (
 )
 
 var casFuncs = map[string]func(string) string{
-	"up": strings.ToUpper,
+	"up":  strings.ToUpper,
 	"low": strings.ToLower,
 	"cap": capitalize,
 }
 
 type Modifiers struct{}
 
-func(Modifiers) Name() string { return "modifiers" }
+func (Modifiers) Name() string { return "modifiers" }
 
-func (Modifiers) Apply(tokens []lexer.Token) ([]lexer.Token, []lexer.Diagnostic){
+func (Modifiers) Apply(tokens []lexer.Token) ([]lexer.Token, []lexer.Diagnostic) {
 	var out []lexer.Token
 	var diags []lexer.Diagnostic
 	carry := false
-	
+
 	keep := func(tok lexer.Token) {
 		tok.SpaceBefore = tok.SpaceBefore || carry
 		carry = false
 		out = append(out, tok)
 	}
-	warn : func(tok lexer.Token,msg string){
+warn:
+	func(tok lexer.Token, msg string) {
 		diags = append(diags, lexer.Diagnostic{
 			Line: tok.Line, Col: tok.Col, Severity: "warning", Message: msg,
 		})
@@ -69,8 +70,8 @@ func (Modifiers) Apply(tokens []lexer.Token) ([]lexer.Token, []lexer.Diagnostic)
 	return out, diags
 }
 
-func parseModifier(text string)(name string, count int, countOK bool){
-	inner := strings.TrimSuffix(strings.TrimPrefix(text, "("),")")
+func parseModifier(text string) (name string, count int, countOK bool) {
+	inner := strings.TrimSuffix(strings.TrimPrefix(text, "("), ")")
 	rawName, rawCount, hasCount := strings.Cut(inner, ",")
 	name = strings.TrimSpace(rawName)
 	if !hasCount {
