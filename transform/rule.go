@@ -1,6 +1,8 @@
 package transform
 
-import "goreforged/lexer"
+import (
+	"Go_Reforged/lexer"
+)
 
 type Rule interface {
 	Name() string

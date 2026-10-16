@@ -20,6 +20,7 @@ type Token struct {
 	Line        int
 	Col         int
 	SpaceBefore bool // vrai si un espace précédait ce token dans le texte d'origine
+	Modified    bool // vrai si un modificateur ou un bloc a transformé ce mot
 }
 
 // Diagnostic décrit un avertissement ou une erreur à une position précise.
