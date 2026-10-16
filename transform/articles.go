@@ -20,7 +20,7 @@ func (Articles) Apply(tokens []lexer.Token) ([]lexer.Token, []lexer.Diagnostic) 
 		if tok.Kind != lexer.Word {
 			continue
 		}
-		lower := strings.ToLower(tok, Text)
+		lower := strings.ToLower(tok.Text)
 		if lower != "a" && lower != "an" {
 			continue
 		}
