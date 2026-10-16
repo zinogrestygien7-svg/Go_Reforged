@@ -9,7 +9,7 @@ import (
 	"Go_Reforged/lexer"
 )
 
-var casFuncs = map[string]func(string) string{
+var caseFuncs = map[string]func(string) string{
 	"up":  strings.ToUpper,
 	"low": strings.ToLower,
 	"cap": capitalize,
@@ -29,8 +29,7 @@ func (Modifiers) Apply(tokens []lexer.Token) ([]lexer.Token, []lexer.Diagnostic)
 		carry = false
 		out = append(out, tok)
 	}
-warn:
-	func(tok lexer.Token, msg string) {
+	warn := func(tok lexer.Token, msg string) {
 		diags = append(diags, lexer.Diagnostic{
 			Line: tok.Line, Col: tok.Col, Severity: "warning", Message: msg,
 		})
