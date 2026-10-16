@@ -208,12 +208,7 @@ func reverse(word string) string {
 func titleCase(words []string) []string {
 	out := make([]string, len(words))
 	for i, w := range words {
-		lower := strings.ToLower(w)
-		if i > 0 && smallWords[lower] {
-			out[i] = lower
-		} else {
-			out[i] = capitalize(w)
-		}
+		out[i] = titleWord(w, i == 0)
 	}
 	return out
 }
@@ -224,4 +219,12 @@ func wordsAt(tokens []lexer.Token, idx []int) []string {
 		words[k] = tokens[i].Text
 	}
 	return words
+}
+
+func titleWord(word string, first bool) string {
+	lower := strings.ToLower(word)
+	if !first && smallWords[lower] {
+		return lower
+	}
+	return capitalize(word)
 }
