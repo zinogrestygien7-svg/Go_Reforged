@@ -35,6 +35,40 @@ func TestModifiers(t *testing.T) {
 		{"aucun mot avant", "(up) hello", "(up) hello", []lexer.Diagnostic{
 			{Line: 1, Col: 1, Severity: "warning", Message: `no word before modifier "(up)"`},
 		}},
+				{"hex", "1E (hex) files were added", "30 files were added", nil},
+		{"hex minuscules", "ff (hex)", "255", nil},
+		{"hex négatif", "-1A (hex)", "-26", nil},
+		{"bin", "It has been 10 (bin) years", "It has been 2 years", nil},
+		{"oct", "17 (oct)", "15", nil},
+		{"to-hex", "255 (to-hex)", "FF", nil},
+		{"to-bin", "5 (to-bin)", "101", nil},
+		{"roman", "MMXXVI (roman)", "2026", nil},
+		{"roman minuscules", "mmxxvi (roman)", "2026", nil},
+		{"to-roman", "1984 (to-roman)", "MCMLXXXIV", nil},
+		{"conversion avec nombre", "1E 10 (hex, 2)", "30 16", nil},
+		{"chaînage", "FF (hex) (to-bin)", "11111111", nil},
+		{"hex invalide", "Add ZZ (hex) now", "Add ZZ (hex) now", []lexer.Diagnostic{
+			{Line: 1, Col: 8, Severity: "warning", Message: `invalid hexadecimal number "ZZ"`},
+		}},
+		{"bin invalide", "3 (bin)", "3 (bin)", []lexer.Diagnostic{
+			{Line: 1, Col: 3, Severity: "warning", Message: `invalid binary number "3"`},
+		}},
+		{"roman IIII refusé", "IIII (roman)", "IIII (roman)", []lexer.Diagnostic{
+			{Line: 1, Col: 6, Severity: "warning", Message: `invalid roman numeral "IIII"`},
+		}},
+		{"roman VX refusé", "VX (roman)", "VX (roman)", []lexer.Diagnostic{
+			{Line: 1, Col: 4, Severity: "warning", Message: `invalid roman numeral "VX"`},
+		}},
+		{"to-roman hors intervalle", "4000 (to-roman)", "4000 (to-roman)", []lexer.Diagnostic{
+			{Line: 1, Col: 6, Severity: "warning", Message: `number "4000" is out of range 1-3999`},
+		}},
+		{"dépassement int64", "9223372036854775808 (to-hex)", "9223372036854775808 (to-hex)", []lexer.Diagnostic{
+			{Line: 1, Col: 21, Severity: "warning", Message: `invalid decimal number "9223372036854775808"`},
+		}},
+		{"deux mots invalides", "ZZ YY (hex, 2)", "ZZ YY (hex, 2)", []lexer.Diagnostic{
+			{Line: 1, Col: 7, Severity: "warning", Message: `invalid hexadecimal number "ZZ"`},
+			{Line: 1, Col: 7, Severity: "warning", Message: `invalid hexadecimal number "YY"`},
+		}},
 	}
 
 	for _, tc := range tests {
