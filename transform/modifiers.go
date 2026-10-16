@@ -29,6 +29,7 @@ var modifierFuncs = map[string]wordFunc{
 	"to-bin":   toBase(2),
 	"roman":    fromRoman,
 	"to-roman": toRoman,
+	"rev":      caseFunc(reverse),
 }
 
 // Modifiers applique les modificateurs postfixés : (up), (hex), (to-roman)...
@@ -60,10 +61,11 @@ func (Modifiers) Apply(tokens []lexer.Token) ([]lexer.Token, []lexer.Diagnostic)
 
 		name, count, countOK := parseModifier(tok.Text)
 		fn, supported := modifierFuncs[name]
+		isTitle := name == "title" // dépend de la position du mot : traité à part
 
 		switch {
-		case !supported:
-			keep(tok) // (rev) et (title) viendront à l'étape suivante
+		case !supported && !isTitle:
+			keep(tok)
 		case !countOK:
 			warn(tok, fmt.Sprintf("invalid count in modifier %q", tok.Text))
 			keep(tok)
@@ -78,7 +80,12 @@ func (Modifiers) Apply(tokens []lexer.Token) ([]lexer.Token, []lexer.Diagnostic)
 				warn(tok, fmt.Sprintf("modifier %q asks for %d words but only %d available",
 					tok.Text, count, len(idx)))
 			}
-			results, errs := convertWords(out, idx, fn)
+			var results, errs []string
+			if isTitle {
+				results = titleCase(wordsAt(out, idx))
+			} else {
+				results, errs = convertWords(out, idx, fn)
+			}
 			if len(errs) > 0 {
 				for _, msg := range errs {
 					warn(tok, msg)
@@ -175,4 +182,46 @@ func toBase(base int) wordFunc {
 		}
 		return strings.ToUpper(strconv.FormatInt(n, base)), nil
 	}
+}
+
+var smallWords = map[string]bool{
+	"a": true, "an": true, "the": true, "of": true, "and": true,
+	"or": true, "in": true, "on": true, "at": true, "to": true,
+}
+
+func reverse(word string) string {
+	var clusters [][]rune
+	for _, r := range word {
+		if unicode.IsMark(r) && len(clusters) > 0 {
+			clusters[len(clusters)-1] = append(clusters[len(clusters)-1], r)
+			continue
+		}
+		clusters = append(clusters, []rune{r})
+	}
+	var b strings.Builder
+	for i := len(clusters) - 1; i >= 0; i-- {
+		b.WriteString(string(clusters[i]))
+	}
+	return b.String()
+}
+
+func titleCase(words []string) []string {
+	out := make([]string, len(words))
+	for i, w := range words {
+		lower := strings.ToLower(w)
+		if i > 0 && smallWords[lower] {
+			out[i] = lower
+		} else {
+			out[i] = capitalize(w)
+		}
+	}
+	return out
+}
+
+func wordsAt(tokens []lexer.Token, idx []int) []string {
+	words := make([]string, len(idx))
+	for k, i := range idx {
+		words[k] = tokens[i].Text
+	}
+	return words
 }
