@@ -9,15 +9,15 @@ import (
 
 type Blocks struct{}
 
-func (Blocks) name() string { return "blocks"}
+func (Blocks) Name() string { return "blocks" }
 
 type openBlock struct {
-	name string
-	tok lexer.Token
+	name  string
+	tok   lexer.Token
 	words int
 }
 
-func (Blocks) Apply(tokens []lexer.Token)([]lexer.Token, []lexer.Diagnostic) {
+func (Blocks) Apply(tokens []lexer.Token) ([]lexer.Token, []lexer.Diagnostic) {
 	if diags := checkBlocks(tokens); len(diags) > 0 {
 		return tokens, diags
 	}
