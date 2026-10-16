@@ -35,7 +35,7 @@ func TestModifiers(t *testing.T) {
 		{"aucun mot avant", "(up) hello", "(up) hello", []lexer.Diagnostic{
 			{Line: 1, Col: 1, Severity: "warning", Message: `no word before modifier "(up)"`},
 		}},
-				{"hex", "1E (hex) files were added", "30 files were added", nil},
+		{"hex", "1E (hex) files were added", "30 files were added", nil},
 		{"hex minuscules", "ff (hex)", "255", nil},
 		{"hex négatif", "-1A (hex)", "-26", nil},
 		{"bin", "It has been 10 (bin) years", "It has been 2 years", nil},
