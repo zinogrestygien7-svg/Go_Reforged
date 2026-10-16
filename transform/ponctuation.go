@@ -8,7 +8,6 @@ import (
 	"Go_Reforged/lexer"
 )
 
-// Rôle d'un guillemet dans la ligne.
 const (
 	roleNone = iota
 	roleOpen
