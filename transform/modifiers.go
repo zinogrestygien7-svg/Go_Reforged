@@ -56,7 +56,7 @@ func (Modifiers) Apply(tokens []lexer.Token) ([]lexer.Token, []lexer.Diagnostic)
 				continue
 			}
 			if len(idx) < count {
-				warn(tok, fmt.Sprintf("modifier %q asks for %d words but only %d avaible",
+				warn(tok, fmt.Sprintf("modifier %q asks for %d words but only %d available",
 					tok.Text, count, len(idx)))
 			}
 			for _, i := range idx {
